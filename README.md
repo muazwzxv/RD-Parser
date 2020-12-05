@@ -1,5 +1,8 @@
 
-### Assigment for my compiler class
+### Assigment for my compilers class
+
+We are required to implement a Recursive Descent Parser using java and the best thing about this is
+we can decide on the vocab of the parser
 
 - The objective is to create a Recursive Descent Parser using Java
 - The vocab can be anything we decided on
@@ -7,9 +10,21 @@
 ### Plan
 
 - My plan is to parse a valid assigment statement is a programming language
-```java
+```ts
 type data = 10;
 ```
-
 - The assingment statement has to include an identifier, the assignment '=' symbol and the value to
 	assign, and ends with a semicolon
+
+### My hope
+
+- If i got lucky, i want the Parser to accept incoming string of mathematical operations and not
+	just simple assingment statements
+
+```ts
+let data = x + y;
+const test = x * y;
+var huhu = x / y;
+let mod = x % y;
+```
+
