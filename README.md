@@ -9,7 +9,7 @@ we can decide on the vocab of the parser
 
 ### Plan
 
-- My plan is to parse a valid assigment statement is a programming language
+- My plan is to parse a valid assigment statement in a programming language
 ```ts
 type data = 10;
 ```
