@@ -1,19 +1,24 @@
 import java.io.*;
+import java.util.Scanner;
 
 class RDP // Recursive Descent Parser
 {
     char inp;
+		public final static Scanner input = new Scanner(System.in);
+		static String token;
 
     public static void main(String[] args) throws IOException {
         InputStreamReader stdin = new InputStreamReader(System.in);
+				this.input.useDelimiter("/n");
         RDP rdp = new RDP();
         rdp.parse();
     }
 
     void parse() {
         inp = getInp();
+				System.out.println(inp);
         S(); // Call start nonterminal
-        if (inp == 'N')
+        if (inp == ';')
             accept(); // end of string marker
         else
             reject();
