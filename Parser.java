@@ -8,6 +8,7 @@ class Parser {
 
 	private static final HashMap<String, Character> operatorStore = new HashMap<>();
 	private static final HashMap<String, String> identifierStore = new HashMap<>();
+	private static final HashMap<String, String> comparitorStore = new HashMap<>();
 	private static List<String> variables = new ArrayList<String>();
 
 	static {
@@ -16,13 +17,14 @@ class Parser {
 		operatorStore.put("MUL", '*');
 		operatorStore.put("DIV", '/');
 		operatorStore.put("MOD", '%');
-		operatorStore.put("ASSIGN", '=');
 		operatorStore.put("BREAK", ';');
 
 		identifierStore.put("LET", "let");
 		identifierStore.put("CONST", "const");
 		identifierStore.put("VAR", "var");
 		identifierStore.put("TYPE", "type");
+
+		comparitorStore.put("ASSIGN", '=')
 
 	}
 
@@ -70,30 +72,44 @@ class Parser {
 		
 	}
 
-	void type() {
-		if (checkTokenIdentifier(getToken())) {
-			registerVariable(getNextToken());	
+	static void type() {
+		try {
+			if (checkTokenIdentifier(getToken())) {
+				registerVariable(getNextToken());	
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	boolean registerVariable(String var) {
-
+	static boolean registerVariable(String token) {
+		if (variables.contains(token)) {
+			System.out.println("variable already exists");
+			reject();
+		}
+		variables.add(token);
 	}
 
-	public static String getToken() {
+	static String getToken() {
 		return token[index];
 	}
 
-	public static String getNextToken() throws Exception {
+	static String getNextToken() throws Exception {
 		if (index > token.length) throw new Exception("Array out of bound");
 		return token[++index];
 	}
 
-	public static boolean checkTokenIdentifier(String token) {
+	static boolean checkTokenIdentifier(String token) {
 		return identifierStore.containsValue(token);
 	}
 
-	public static boolean checkTokenOperator(String token) {
+	static boolean checkTokenOperator(String token) {
 		return operatorStore.containsValue(token);
 	}
+
+	static void reject() {
+		System.out.println("reject");
+		System.exit(0);
+	}
+	
 }

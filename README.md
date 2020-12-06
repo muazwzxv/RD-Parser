@@ -28,3 +28,15 @@ var huhu = x / y;
 let mod = x % y;
 ```
 
+### Rules for the parser
+
+- Categories of expression in the parser
+I = Identifier :- {let, const, var}
+V = variable :- {free for user to input}
+O = operator :- {+, =, -, %}
+v = value :- {any number input by the user, any string input by the user}
+
+A -> IVOv | IV 
+B -> VOv | vOO
+
+
