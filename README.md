@@ -36,7 +36,7 @@ Categories of expression in the parser
 - O = operator :- {+, =, -, %}
 - v = value :- {any number input by the user, any string input by the user}
 
-A -> IVOv | IV 
+A -> IVOv | IV <br /> 
 B -> VOv | vOO
 
 
