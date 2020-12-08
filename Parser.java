@@ -34,22 +34,16 @@ class Parser {
 
 		String stmt = in.next();
 		TOKEN = stmt.split("\\s");
+		parse();
 
-		try {
+		/*try {
 			System.out.println(getToken());
-			System.out.println(getNextToken());
+			incrementPointer();
 			System.out.println(getToken());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-
-		/*for (int i = 0; i < token.length; i++) {
-			try {
-				System.out.println(getNextToken());
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-		}*/
+		*/
 
 	}
 
@@ -62,16 +56,20 @@ class Parser {
 	static void type() {
 		try {
 			// checks token for identifier
-			if (checkTokenIdentifier(getToken())) registerVariable(getNextToken());	
+			if (checkTokenIdentifier(getToken())) {
+				registerVariable(getNextToken());	
+			}
+			
 			// chekcs token for operator
 			if (checkTokenOperator(getToken())) reject(); 
 			// Cheks if line breaker in the middle of string input
-			if (TOKEN.length != INDEX + 1) {
+			if (TOKEN.length != INDEX) {
 				if (checkLineBreak(getToken())) reject();
 			}
 			
 			// increment pointer for next iteration
 			incrementPointer();
+			//type();
 
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -98,7 +96,7 @@ class Parser {
 
 	static void incrementPointer() throws Exception {
 		if (INDEX > TOKEN.length) throw new Exception("Array out of bound");
-		++INDEX;
+		INDEX++;
 	}
 
 	static boolean checkTokenIdentifier(String token) {
@@ -110,7 +108,6 @@ class Parser {
 	}
 
 	static boolean checkLineBreak(String token) {
-		char parsed = token.charAt(0);
 		if (Character.compare(token.charAt(0), BREAK) == 0) return true;
 		return false;
 	}
