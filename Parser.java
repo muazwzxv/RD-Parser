@@ -84,6 +84,18 @@ class Parser {
 				base();
 			}
 
+			// Checks for operator
+			if (checkTokenOperator(getToken())) {
+				if (flagV == true) resetFlag();
+
+				flagO = true;
+				incrementPointer();
+				System.out.println("The index" + INDEX);
+
+				// Recursion 
+				base();
+			}
+
 			// Checks for comparitor
 			if (checkTokenComparitor(getToken())) {
 				if (flagV == true) resetFlag();
@@ -98,7 +110,7 @@ class Parser {
 
 			// Chekcs for variable
 			if (checTokenVariable(getToken())) {
-				if (flagI == true || flagC == true) {
+				if (flagI == true || flagC == true || flagO == true) {
 					if(registerVariable(getToken())) {
 						resetFlag();
 						flagV = true;
