@@ -28,20 +28,6 @@ class Parser {
 
 	}
 
-	// Constants for operators
-	static final char ADD = '+';
-	static final char SUB = '-';
-	static final char MUL = '*';
-	static final char DIV = '/';
-	static final char MOD = '%';
-	static final char ASSIGN = '=';
-	static final char BREAK = ';';
-
-	// Constant for identifier
-	static final String LET = "let";
-	static final String CONST = "const";
-	static final String VAR = "var";
-
 	public static void main(String[] args) throws IOException {
 		in.useDelimiter("\n");
 		System.out.println("Enter String to validate");
@@ -109,6 +95,11 @@ class Parser {
 
 	static void reject() {
 		System.out.println("reject");
+		System.exit(0);
+	}
+
+	static void acceptt() {
+		System.out.println("accept");
 		System.exit(0);
 	}
 	
