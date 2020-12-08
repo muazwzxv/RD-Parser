@@ -5,28 +5,12 @@ class Parser {
 	public final static Scanner in = new Scanner(System.in);
 	static String[] TOKEN;
 	static int INDEX = 0;
+
 	private final static char BREAK = ';'; 
-
-	private static final HashMap<String, Character> operatorStore = new HashMap<>();
-	private static final HashMap<String, String> identifierStore = new HashMap<>();
-	private static final HashMap<String, Character> comparitorStore = new HashMap<>();
-	private static List<String> variables = new ArrayList<String>();
-
-	static {
-		operatorStore.put("ADD", '+');
-		operatorStore.put("SUB", '-');
-		operatorStore.put("MUL", '*');
-		operatorStore.put("DIV", '/');
-		operatorStore.put("MOD", '%');
-
-		identifierStore.put("LET", "let");
-		identifierStore.put("CONST", "const");
-		identifierStore.put("VAR", "var");
-		identifierStore.put("TYPE", "type");
-
-		comparitorStore.put("ASSIGN", '=');
-
-	}
+	private static List<String> VARIABLE = new ArrayList<String>();
+	private static List<String> IDENTIFIER = new ArrayList<String>();
+	private static List<String> OPERATOR = new ArrayList<String>();
+	private static List<String> COMPARITOR = new ArrayList<String>();
 
 	public static void main(String[] args) throws IOException {
 		in.useDelimiter("\n");
@@ -34,6 +18,18 @@ class Parser {
 
 		String stmt = in.next();
 		TOKEN = stmt.split("\\s");
+		OPERATOR.add("+");
+		OPERATOR.add("-");
+		OPERATOR.add("*");
+		OPERATOR.add("/");
+		OPERATOR.add("%");
+
+		COMPARITOR.add("=");
+
+		IDENTIFIER.add("let");
+		IDENTIFIER.add("type");
+		IDENTIFIER.add("var");
+		IDENTIFIER.add("const");
 		parse();
 
 		/*try {
@@ -48,28 +44,19 @@ class Parser {
 	}
 
 	public static void parse() {
-		type();
+		base();
 	}
-		
-	
 
-	static void type() {
+	static void base() {
 		try {
-			// checks token for identifier
+
 			if (checkTokenIdentifier(getToken())) {
-				registerVariable(getNextToken());	
+				incrementPointer();
 			}
-			
-			// chekcs token for operator
-			if (checkTokenOperator(getToken())) reject(); 
-			// Cheks if line breaker in the middle of string input
-			if (TOKEN.length != INDEX) {
-				if (checkLineBreak(getToken())) reject();
-			}
-			
-			// increment pointer for next iteration
-			incrementPointer();
-			//type();
+
+			if (checkTokenOperator(getToken()) && INDEX == 0) reject();
+			if (checkLineBreak(getToken()) && INDEX == 0) reject();
+			if (checkTokenComparitor(getToken()) && INDEX == 0) reject();
 
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -77,11 +64,12 @@ class Parser {
 	}
 
 	static boolean registerVariable(String token) {
-		if (variables.contains(token)) {
+		if (VARIABLE.contains(token)) {
 			System.out.println("variable already exists");
 			reject();
 		}
-		variables.add(token);
+		System.out.println(token);
+		VARIABLE.add(token);
 		return true;
 	}
 
@@ -100,11 +88,15 @@ class Parser {
 	}
 
 	static boolean checkTokenIdentifier(String token) {
-		return identifierStore.containsValue(token);
+		return IDENTIFIER.contains(token);
 	}
 
 	static boolean checkTokenOperator(String token) {
-		return operatorStore.containsValue(token);
+		return OPERATOR.contains(token);
+	}
+
+	static boolen checkTokenComparitor(String token) {
+		return COMPARITOR.contains(token);
 	}
 
 	static boolean checkLineBreak(String token) {
@@ -112,12 +104,15 @@ class Parser {
 		return false;
 	}
 
+	static void setup() {
+	}
+
 	static void reject() {
 		System.out.println("reject");
 		System.exit(0);
 	}
 
-	static void acceptt() {
+	static void accept() {
 		System.out.println("accept");
 		System.exit(0);
 	}
