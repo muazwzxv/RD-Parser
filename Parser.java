@@ -3,12 +3,13 @@ import java.util.*;
 
 class Parser {
 	public final static Scanner in = new Scanner(System.in);
-	static String[] token;
-	static int index = 0;
+	static String[] TOKEN;
+	static int INDEX = 0;
+	private final static char BREAK = ';'; 
 
 	private static final HashMap<String, Character> operatorStore = new HashMap<>();
 	private static final HashMap<String, String> identifierStore = new HashMap<>();
-	private static final HashMap<String, String> comparitorStore = new HashMap<>();
+	private static final HashMap<String, Character> comparitorStore = new HashMap<>();
 	private static List<String> variables = new ArrayList<String>();
 
 	static {
@@ -17,14 +18,13 @@ class Parser {
 		operatorStore.put("MUL", '*');
 		operatorStore.put("DIV", '/');
 		operatorStore.put("MOD", '%');
-		operatorStore.put("BREAK", ';');
 
 		identifierStore.put("LET", "let");
 		identifierStore.put("CONST", "const");
 		identifierStore.put("VAR", "var");
 		identifierStore.put("TYPE", "type");
 
-		comparitorStore.put("ASSIGN", '=')
+		comparitorStore.put("ASSIGN", '=');
 
 	}
 
@@ -33,7 +33,7 @@ class Parser {
 		System.out.println("Enter String to validate");
 
 		String stmt = in.next();
-		token = stmt.split("\\s");
+		TOKEN = stmt.split("\\s");
 
 		try {
 			System.out.println(getToken());
@@ -55,14 +55,24 @@ class Parser {
 
 	public static void parse() {
 		type();
-		
 	}
+		
+	
 
 	static void type() {
 		try {
-			if (checkTokenIdentifier(getToken())) {
-				registerVariable(getNextToken());	
+			// checks token for identifier
+			if (checkTokenIdentifier(getToken())) registerVariable(getNextToken());	
+			// chekcs token for operator
+			if (checkTokenOperator(getToken())) reject(); 
+			// Cheks if line breaker in the middle of string input
+			if (TOKEN.length != INDEX + 1) {
+				if (checkLineBreak(getToken())) reject();
 			}
+			
+			// increment pointer for next iteration
+			incrementPointer();
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -74,15 +84,21 @@ class Parser {
 			reject();
 		}
 		variables.add(token);
+		return true;
 	}
 
 	static String getToken() {
-		return token[index];
+		return TOKEN[INDEX];
 	}
 
 	static String getNextToken() throws Exception {
-		if (index > token.length) throw new Exception("Array out of bound");
-		return token[++index];
+		if (INDEX > TOKEN.length) throw new Exception("Array out of bound");
+		return TOKEN[++INDEX];
+	}
+
+	static void incrementPointer() throws Exception {
+		if (INDEX > TOKEN.length) throw new Exception("Array out of bound");
+		++INDEX;
 	}
 
 	static boolean checkTokenIdentifier(String token) {
@@ -91,6 +107,12 @@ class Parser {
 
 	static boolean checkTokenOperator(String token) {
 		return operatorStore.containsValue(token);
+	}
+
+	static boolean checkLineBreak(String token) {
+		char parsed = token.charAt(0);
+		if (Character.compare(token.charAt(0), BREAK) == 0) return true;
+		return false;
 	}
 
 	static void reject() {
