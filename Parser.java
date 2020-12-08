@@ -45,16 +45,6 @@ class Parser {
 		IDENTIFIER.add("const");
 		IDENTIFIER.add("enum");
 		parse();
-
-		/*try {
-			System.out.println(getToken());
-			incrementPointer();
-			System.out.println(getToken());
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		*/
-
 	}
 
 	public static void parse() {
@@ -84,8 +74,8 @@ class Parser {
 			// Checks for identifier
 			if (checkTokenIdentifier(getToken())) {
 				if (flagI == true) reject();
-				
 				resetFlag();
+
 				flagI = true;
 				incrementPointer();
 				System.out.println("The index" + INDEX);
@@ -99,7 +89,6 @@ class Parser {
 				if (flagV == true) resetFlag();
 
 				flagC = true;
-				
 				incrementPointer();
 				System.out.println("The index" + INDEX);
 
@@ -108,7 +97,7 @@ class Parser {
 			}
 
 			// Chekcs for variable
-			if(checTokenVariable(getToken())) {
+			if (checTokenVariable(getToken())) {
 				if (flagI == true || flagC == true) {
 					if(registerVariable(getToken())) {
 						resetFlag();
@@ -121,7 +110,6 @@ class Parser {
 					base();
 				}
 			}
-
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -179,9 +167,6 @@ class Parser {
 
 	static boolean checTokenVariable(String token) {
 		return (!checkTokenComparitor(token) && !checkLineBreak(token) && !checkTokenIdentifier(token) && !checkTokenOperator(token));
-	}
-
-	static void setup() {
 	}
 
 	static void reject() {
