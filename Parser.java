@@ -2,10 +2,23 @@ import java.io.*;
 import java.util.*;
 
 class Parser {
-	public final static Scanner in = new Scanner(System.in);
-	static String[] TOKEN;
-	static int INDEX = 0;
 
+	// Scanner
+	public final static Scanner in = new Scanner(System.in);
+
+	// Token in buffer
+	static String[] TOKEN;
+
+	// index pointer 
+	static int INDEX = 0;
+	
+	// flag
+	static boolean flagO = false;
+	static boolean flagV = false;
+	static boolean flagC = false;
+	static boolean flagI = false;
+
+	// Reserved word store
 	private final static char BREAK = ';'; 
 	private static List<String> VARIABLE = new ArrayList<String>();
 	private static List<String> IDENTIFIER = new ArrayList<String>();
@@ -50,13 +63,44 @@ class Parser {
 	static void base() {
 		try {
 
-			if (checkTokenIdentifier(getToken())) {
-				incrementPointer();
+			if (INDEX == TOKEN.length - 1) {
+				if (checkLineBreak(getToken())) accept();
+				reject();
+			}
+			// throw all error first
+			if (INDEX == 0) {
+				if (checkTokenOperator(getToken())) reject();
+				if (checkLineBreak(getToken())) reject();
+				if (checkTokenComparitor(getToken())) reject();
+
+			} else {
+				if (checkTokenOperator(getToken()) && flagO == true) reject();
+				if (checkLineBreak(getToken()) && flagI == true || flagO == true) reject();
+				if (checkTokenComparitor(getToken()) && flagI == true || flagO == true) reject();
+				//if (checkTokenOperator(getToken()))
 			}
 
-			if (checkTokenOperator(getToken()) && INDEX == 0) reject();
-			if (checkLineBreak(getToken()) && INDEX == 0) reject();
-			if (checkTokenComparitor(getToken()) && INDEX == 0) reject();
+			if (checkTokenIdentifier(getToken())) {
+				if (flagI == true) reject();
+				
+				resetFlag();
+				flagI = true;
+				incrementPointer();
+				System.out.println("The index" + INDEX);
+				base();
+			}
+
+			if(checTokenVariable(getToken())) {
+				if (flagI == true) {
+					if(registerVariable(getToken())) {
+						resetFlag();
+						flagV = true;
+					}
+					incrementPointer();
+					System.out.println("The index" + INDEX);
+					base();
+				}
+			}
 
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -64,6 +108,8 @@ class Parser {
 	}
 
 	static boolean registerVariable(String token) {
+		if (checkTokenOperator(token) || checkLineBreak(token) || checkTokenComparitor(token)) reject();
+
 		if (VARIABLE.contains(token)) {
 			System.out.println("variable already exists");
 			reject();
@@ -71,6 +117,13 @@ class Parser {
 		System.out.println(token);
 		VARIABLE.add(token);
 		return true;
+	}
+
+	static void resetFlag() {
+		flagV = false;
+		flagO = false;
+		flagI = false;
+		flagC = false;
 	}
 
 	static String getToken() {
@@ -95,13 +148,17 @@ class Parser {
 		return OPERATOR.contains(token);
 	}
 
-	static boolen checkTokenComparitor(String token) {
+	static boolean checkTokenComparitor(String token) {
 		return COMPARITOR.contains(token);
 	}
 
 	static boolean checkLineBreak(String token) {
 		if (Character.compare(token.charAt(0), BREAK) == 0) return true;
 		return false;
+	}
+
+	static boolean checTokenVariable(String token) {
+		return (!checkTokenComparitor(token) && !checkLineBreak(token) && !checkTokenIdentifier(token) && !checkTokenOperator(token));
 	}
 
 	static void setup() {
