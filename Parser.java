@@ -43,6 +43,7 @@ class Parser {
 		IDENTIFIER.add("type");
 		IDENTIFIER.add("var");
 		IDENTIFIER.add("const");
+		IDENTIFIER.add("enum");
 		parse();
 
 		/*try {
@@ -62,11 +63,12 @@ class Parser {
 
 	static void base() {
 		try {
-
+			// Checks if index reached its limit
 			if (INDEX == TOKEN.length - 1) {
-				if (checkLineBreak(getToken())) accept();
-				reject();
+				if (checkLineBreak(getToken()) && flagV == true) accept();
+				else reject();
 			}
+
 			// throw all error first
 			if (INDEX == 0) {
 				if (checkTokenOperator(getToken())) reject();
@@ -77,9 +79,9 @@ class Parser {
 				if (checkTokenOperator(getToken()) && flagO == true) reject();
 				if (checkLineBreak(getToken()) && flagI == true || flagO == true) reject();
 				if (checkTokenComparitor(getToken()) && flagI == true || flagO == true) reject();
-				//if (checkTokenOperator(getToken()))
 			}
 
+			// Checks for identifier
 			if (checkTokenIdentifier(getToken())) {
 				if (flagI == true) reject();
 				
@@ -87,17 +89,35 @@ class Parser {
 				flagI = true;
 				incrementPointer();
 				System.out.println("The index" + INDEX);
+
+				// Recursion
 				base();
 			}
 
+			// Checks for comparitor
+			if (checkTokenComparitor(getToken())) {
+				if (flagV == true) resetFlag();
+
+				flagC = true;
+				
+				incrementPointer();
+				System.out.println("The index" + INDEX);
+
+				// Recursion
+				base();
+			}
+
+			// Chekcs for variable
 			if(checTokenVariable(getToken())) {
-				if (flagI == true) {
+				if (flagI == true || flagC == true) {
 					if(registerVariable(getToken())) {
 						resetFlag();
 						flagV = true;
 					}
 					incrementPointer();
 					System.out.println("The index" + INDEX);
+
+					// Recursion
 					base();
 				}
 			}
