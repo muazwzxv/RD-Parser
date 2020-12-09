@@ -37,7 +37,7 @@ Categories of expression in the parser
 - v = value :- {any number input by the user, any string input by the user}
 - C = Comparitor :- { = }
 
-A -> IVOv | IV <br /> 
-B -> VCv
+A -> IVCv | IV | IVCvOv <br /> 
+B -> VCv | VCvOv
 
 

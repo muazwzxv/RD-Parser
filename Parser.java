@@ -19,7 +19,7 @@ class Parser {
 	static boolean flagI = false;
 
 	// Reserved word store
-	private final static char BREAK = ';'; 
+	private final static String BREAK = ";"; 
 	private static List<String> VARIABLE = new ArrayList<String>();
 	private static List<String> IDENTIFIER = new ArrayList<String>();
 	private static List<String> OPERATOR = new ArrayList<String>();
@@ -66,13 +66,10 @@ class Parser {
 				if (checkTokenComparitor(getToken())) reject();
 
 			} else {
-				System.out.println("Condition 1 "+(checkTokenOperator(getToken()) && flagO == true));
-				System.out.println("Condition 2 "+(checkLineBreak(getToken()) && flagI == true || flagO == true));
-				System.out.println("Condition 3 "+(checkTokenComparitor(getToken()) && flagI == true || flagO == true));
 
 				if (checkTokenOperator(getToken()) && flagO == true) reject();
-				if (checkLineBreak(getToken()) && flagI == true || flagO == true) reject();
-				if (checkTokenComparitor(getToken()) && flagI == true || flagO == true) reject();
+				if (checkLineBreak(getToken()) && (flagI == true || flagO == true)) reject();
+				if (checkTokenComparitor(getToken()) && (flagI == true || flagO == true)) reject();
 			}
 
 			// Checks for identifier
@@ -82,7 +79,6 @@ class Parser {
 
 				flagI = true;
 				incrementPointer();
-				System.out.println("The index " + INDEX);
 
 				// Recursion
 				base();
@@ -92,11 +88,8 @@ class Parser {
 			if (checkTokenOperator(getToken())) {
 				if (flagV == true) resetFlag();
 
-				System.out.println(getToken());
-
 				flagO = true;
 				incrementPointer();
-				System.out.println("The index operator " + INDEX);
 
 				// Recursion 
 				base();
@@ -108,7 +101,6 @@ class Parser {
 
 				flagC = true;
 				incrementPointer();
-				System.out.println("The index " + INDEX);
 
 				// Recursion
 				base();
@@ -116,14 +108,12 @@ class Parser {
 
 			// Chekcs for variable
 			if (checkTokenVariable(getToken())) {
-				System.out.println("reached here");
 				if ((flagI == true || flagC == true || flagO == true) || INDEX == 0) {
 					if(registerVariable(getToken())) {
 						resetFlag();
 						flagV = true;
 					}
 					incrementPointer();
-					System.out.println("The index " + INDEX);
 
 					// Recursion
 					base();
@@ -179,7 +169,7 @@ class Parser {
 	}
 
 	static boolean checkLineBreak(String token) {
-		if (Character.compare(token.charAt(0), BREAK) == 0) return true;
+		if (BREAK.equalsIgnoreCase(token)) return true;
 		return false;
 	}
 
