@@ -90,7 +90,7 @@ class Parser {
 
 				flagO = true;
 				incrementPointer();
-				System.out.println("The index" + INDEX);
+				System.out.println("The index operator" + INDEX);
 
 				// Recursion 
 				base();
@@ -190,5 +190,8 @@ class Parser {
 		System.out.println("accept");
 		System.exit(0);
 	}
-	
+
+	static void test() {
+
+	}
 }
