@@ -31,12 +31,13 @@ let mod = x % y;
 ### Rules for the parser
 Categories of expression in the parser
 
-- I = Identifier :- {let, const, var}
-- V = variable :- {free for user to input}
-- O = operator :- {+, =, -, %}
+- I = Identifier :- { let, const, var }
+- V = variable :- { free for user to input }
+- O = operator :- { +, -, %, / }
 - v = value :- {any number input by the user, any string input by the user}
+- C = Comparitor :- { = }
 
 A -> IVOv | IV <br /> 
-B -> VOv | vOO
+B -> VCv
 
 

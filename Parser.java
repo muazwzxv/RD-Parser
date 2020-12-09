@@ -66,6 +66,10 @@ class Parser {
 				if (checkTokenComparitor(getToken())) reject();
 
 			} else {
+				System.out.println("Condition 1 "+(checkTokenOperator(getToken()) && flagO == true));
+				System.out.println("Condition 2 "+(checkLineBreak(getToken()) && flagI == true || flagO == true));
+				System.out.println("Condition 3 "+(checkTokenComparitor(getToken()) && flagI == true || flagO == true));
+
 				if (checkTokenOperator(getToken()) && flagO == true) reject();
 				if (checkLineBreak(getToken()) && flagI == true || flagO == true) reject();
 				if (checkTokenComparitor(getToken()) && flagI == true || flagO == true) reject();
@@ -78,7 +82,7 @@ class Parser {
 
 				flagI = true;
 				incrementPointer();
-				System.out.println("The index" + INDEX);
+				System.out.println("The index " + INDEX);
 
 				// Recursion
 				base();
@@ -88,9 +92,11 @@ class Parser {
 			if (checkTokenOperator(getToken())) {
 				if (flagV == true) resetFlag();
 
+				System.out.println(getToken());
+
 				flagO = true;
 				incrementPointer();
-				System.out.println("The index operator" + INDEX);
+				System.out.println("The index operator " + INDEX);
 
 				// Recursion 
 				base();
@@ -102,21 +108,22 @@ class Parser {
 
 				flagC = true;
 				incrementPointer();
-				System.out.println("The index" + INDEX);
+				System.out.println("The index " + INDEX);
 
 				// Recursion
 				base();
 			}
 
 			// Chekcs for variable
-			if (checTokenVariable(getToken())) {
-				if (flagI == true || flagC == true || flagO == true) {
+			if (checkTokenVariable(getToken())) {
+				System.out.println("reached here");
+				if ((flagI == true || flagC == true || flagO == true) || INDEX == 0) {
 					if(registerVariable(getToken())) {
 						resetFlag();
 						flagV = true;
 					}
 					incrementPointer();
-					System.out.println("The index" + INDEX);
+					System.out.println("The index " + INDEX);
 
 					// Recursion
 					base();
@@ -134,7 +141,6 @@ class Parser {
 			System.out.println("variable already exists");
 			reject();
 		}
-		System.out.println(token);
 		VARIABLE.add(token);
 		return true;
 	}
@@ -177,8 +183,8 @@ class Parser {
 		return false;
 	}
 
-	static boolean checTokenVariable(String token) {
-		return (!checkTokenComparitor(token) && !checkLineBreak(token) && !checkTokenIdentifier(token) && !checkTokenOperator(token));
+	static boolean checkTokenVariable(String token) {
+		return (!checkLineBreak(token) && !checkTokenIdentifier(token) && !checkTokenOperator(token));
 	}
 
 	static void reject() {
@@ -189,9 +195,5 @@ class Parser {
 	static void accept() {
 		System.out.println("accept");
 		System.exit(0);
-	}
-
-	static void test() {
-
 	}
 }
