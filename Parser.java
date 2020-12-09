@@ -61,12 +61,15 @@ class Parser {
 
 			// throw all error first
 			if (INDEX == 0) {
+
+				// When pointer index is 0
 				if (checkTokenOperator(getToken())) reject();
 				if (checkLineBreak(getToken())) reject();
 				if (checkTokenComparitor(getToken())) reject();
 
 			} else {
 
+				// When pointer is not 0
 				if (checkTokenOperator(getToken()) && flagO == true) reject();
 				if (checkLineBreak(getToken()) && (flagI == true || flagO == true)) reject();
 				if (checkTokenComparitor(getToken()) && (flagI == true || flagO == true)) reject();
