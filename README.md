@@ -1,5 +1,7 @@
 
-### Assigment for my compilers class
+## Assigment for my compilers class
+
+### Im from UITM and the course code for this subject is CSC569 :- Intro to compilers
 
 We are required to implement a Recursive Descent Parser using java and the best thing about this is
 we can decide on the vocab of the parser
