@@ -31,6 +31,15 @@ class Parser {
 
 		String stmt = in.next();
 		TOKEN = stmt.split("\\s");
+		
+		// Setup reserved words
+		setup();
+
+		// Parse incoming string
+		parse();
+	}
+
+	public void setup() {
 		OPERATOR.add("+");
 		OPERATOR.add("-");
 		OPERATOR.add("*");
@@ -44,7 +53,6 @@ class Parser {
 		IDENTIFIER.add("var");
 		IDENTIFIER.add("const");
 		IDENTIFIER.add("enum");
-		parse();
 	}
 
 	public static void parse() {
