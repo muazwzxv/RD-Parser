@@ -201,4 +201,8 @@ class Parser {
 	static void print() {
 		System.out.println("Raihan kontol");
 	}
+
+	static void delete_user() {
+		System.out.println("Deleted yeet yeet");
+	}
 }
