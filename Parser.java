@@ -197,4 +197,8 @@ class Parser {
 		System.out.println("accept");
 		System.exit(0);
 	}
+
+	static void print() {
+		System.out.println("Raihan kontol");
+	}
 }
